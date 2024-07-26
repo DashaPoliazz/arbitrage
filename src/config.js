@@ -1,11 +1,8 @@
 "use strict";
 
 module.exports = {
-  static: {
-    port: 8000,
-  },
   api: {
-    port: 8001,
+    port: 8000,
     transport: "ws",
   },
   sandbox: {
