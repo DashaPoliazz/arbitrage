@@ -1,5 +1,6 @@
 ({
-  estimate() {
-    console.log("here is the business logic");
-  },
+  /**
+   * Estimates the most higher bid
+   */
+  estimate(inputAmount, inputCurrency, output) {},
 });

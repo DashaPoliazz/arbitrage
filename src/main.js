@@ -7,6 +7,22 @@ const load = require("./load.js")(config.sandbox);
 const process = require("node:process");
 const transport = require(`./transport/${config.api.transport}.js`);
 
+// instantiating stock exchanges clients
+const clients = [];
+for (const clientName of config.activeClients) {
+  const clientConfig = config.clients[clientName];
+  if (!clientConfig) continue;
+  // there is a guarantee that either 'httpConnection' or 'wsConnection'
+  // should have flag 'true' if 'config.activeClient' includes 'clientName'
+  if (clientConfig.httpConnection) {
+    const HTTPClient = require(`./clients/${clientName}/http.js`);
+    const client = new HTTPClient(clientConfig);
+    clients.push(client);
+  }
+}
+
+console.log(clients);
+
 const sandbox = {
   console,
   common: {},

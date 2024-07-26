@@ -13,7 +13,6 @@ module.exports = (routing, port, console) => {
       const { name, method, args = [] } = obj;
       // checking endpoint
       const entity = routing[name];
-      console.log("handler", entity);
 
       if (!entity) {
         connection.send('"Not found"', { binary: false });
