@@ -1,14 +1,12 @@
 class Client {
   name;
-  publicKey;
-  #privateKey;
+  config;
 
   constructor(config) {
-    this.publicKey = config.publicKey;
-    this.#privateKey = config.privateKey;
+    this.config = config;
   }
 
-  async orderbook(fromTicker, toTicker) {
+  async orderbook(fromTicker, toTicker, limit = 1) {
     throw new Error("abstract class is unimplemnted");
   }
 }

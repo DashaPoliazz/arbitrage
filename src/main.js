@@ -19,12 +19,16 @@ for (const clientName of config.activeClients) {
     const client = new HTTPClient(clientConfig);
     clients.push(client);
   }
+  if (clientConfig.wsConnection) {
+    const WSClient = require(`./clients/${clientName}/ws.js`);
+    const client = new WSClient(clientConfig);
+    clients.push(client);
+  }
 }
-
-console.log(clients);
 
 const sandbox = {
   console,
+  clients,
   common: {},
 };
 

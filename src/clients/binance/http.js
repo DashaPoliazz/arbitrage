@@ -4,6 +4,7 @@ const Client = require("../Client.js");
 class BinanceHTTP extends Client {
   constructor(config) {
     super(config);
+    this.name = "binance";
   }
 
   /**

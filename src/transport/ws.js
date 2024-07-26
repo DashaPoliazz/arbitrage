@@ -10,7 +10,7 @@ module.exports = (routing, port, console) => {
 
     connection.on("message", async (message) => {
       const obj = JSON.parse(message);
-      const { name, method, args = [] } = obj;
+      const { name, method, args = {} } = obj;
       // checking endpoint
       const entity = routing[name];
 
@@ -19,20 +19,17 @@ module.exports = (routing, port, console) => {
         return;
       }
       // checking handler
+
       const handler = entity[method];
       if (!handler) {
         connection.send('"Not found"', { binary: false });
         return;
       }
-      // parsing args
-      const json = JSON.stringify(args);
-      const parameters = json.substring(1, json.length - 1);
-      console.log("json", json);
-      console.log(`${ip} ${name}.${method}(${parameters})`);
+      console.log(`${ip} ${name}.${method}(${args})`);
       // trying to calculate the result
       try {
-        const result = await handler(...args);
-        connection.send(JSON.stringify(result.rows), { binary: false });
+        const result = await handler(args);
+        connection.send(JSON.stringify(result), { binary: false });
       } catch (err) {
         console.dir({ err });
         connection.send('"Server error"', { binary: false });
