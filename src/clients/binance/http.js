@@ -48,10 +48,56 @@ class Adapter extends BinanceHTTP {
     super(config);
   }
 
+  /**
+   * ```json
+   * {
+   *   "lastUpdateId": 1027024,
+   *   "bids": [
+   *     [
+   *       "4.00000000",     // PRICE
+   *       "431.00000000"    // QTY
+   *     ]
+   *   ],
+   *   "asks": [
+   *     [
+   *       "4.00000200",     // PRICE
+   *       "12.00000000"     // QTY
+   *     ]
+   *   ]
+   * }
+   * ```
+   *
+   * @param {string} fromTicker - The ticker symbol for the 'from' currency.
+   * @param {string} toTicker - The ticker symbol for the 'to' currency.
+   * @param {number} [limit=1] - The number of entries to retrieve. Defaults to 1.
+   * @returns {Promise<{lastUpdateId: number, bids: Array<[string, string]>, asks: Array<[string, string]>}>} The formatted order book data.
+   */
   async orderbook(fromTicker, toTicker, limit = 1) {
     const originalShape = await super.orderbook(fromTicker, toTicker, limit);
+    return originalShape;
   }
-  async getPrice(fromTicker, toTicker) {}
+
+  /**
+   * ```json
+   * {
+   *   "symbol": "ETHBTC",
+   *   "price": 0.04784,
+   *   "stockExchange": "binance"
+   * }
+   * ```
+   *
+   * @param {string} fromTicker - The ticker symbol for the 'from' currency.
+   * @param {string} toTicker - The ticker symbol for the 'to' currency.
+   * @param {number} [limit=1] - The number of entries to retrieve. Defaults to 1.
+   * @returns {Promise<{symbol: string, price: number, stockExchange: string}>} The order book data formatted as an object.
+   */
+  async getPrice(fromTicker, toTicker) {
+    const originalShape = await super.getPrice(fromTicker, toTicker);
+    return {
+      ...originalShape,
+      price: Number(originalShape.price),
+    };
+  }
 }
 
-module.exports = BinanceHTTP;
+module.exports = Adapter;

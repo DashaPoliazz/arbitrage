@@ -23,28 +23,7 @@ class KucoinHTTP extends Client {
     console.log(url.toString());
     const response = await fetch(url);
     const result = await response.json();
-    // TODO:
-    // [ ] Move this logic to price adapter ?
-    // [ ] Pass verification to get full-depth access to the orderbook
-    const adaptedResult = {
-      lastUpdateId: await result.data.time,
-      bids: [
-        [
-          // price
-          await result.data.bestBid,
-          // qty
-          await result.data.bestBidSize,
-        ],
-      ],
-      asks: [
-        [
-          // price
-          await result.data.bestAsk,
-          await result.data.bestAskSize,
-        ],
-      ],
-    };
-    return adaptedResult;
+    return result;
   }
 
   /**
@@ -62,16 +41,71 @@ class KucoinHTTP extends Client {
     // fetching orderbook data
     const response = await fetch(url);
     const result = await response.json();
-    console.log("RESULT", url);
-    // TODO:
-    // [ ] Move this logic to price adapter ?
-    // [ ] Pass verification to get full-depth access to the orderbook
-    const adaptedResult = {
-      symbol: symbol.split("-").join(""),
-      price: await result.data.value.toString(),
-    };
-    return adaptedResult;
+    return result;
   }
 }
 
-module.exports = KucoinHTTP;
+class Adapter extends KucoinHTTP {
+  constructor(config) {
+    super(config);
+  }
+
+  /**
+   * ```json
+   * {
+   *   "lastUpdateId": 1027024,
+   *   "bids": [
+   *     [
+   *       "4.00000000",     // PRICE
+   *       "431.00000000"    // QTY
+   *     ]
+   *   ],
+   *   "asks": [
+   *     [
+   *       "4.00000200",     // PRICE
+   *       "12.00000000"     // QTY
+   *     ]
+   *   ]
+   * }
+   * ```
+   *
+   * @param {string} fromTicker - The ticker symbol for the 'from' currency.
+   * @param {string} toTicker - The ticker symbol for the 'to' currency.
+   * @param {number} [limit=1] - The number of entries to retrieve. Defaults to 1.
+   * @returns {Promise<{lastUpdateId: number, bids: Array<[string, string]>, asks: Array<[string, string]>}>} The formatted order book data.
+   */
+  async orderbook(fromTicker, toTicker, limit = 1) {
+    const originalShape = await super.orderbook(fromTicker, toTicker, limit);
+    const adaptedShape = {
+      lastUpdateId: originalShape.data.time,
+      bids: [[originalShape.data.bestBid, originalShape.data.bestBidSize]],
+      asks: [[originalShape.data.bestAsk, originalShape.data.bestAskSize]],
+    };
+    return adaptedShape;
+  }
+
+  /**
+   * ```json
+   * {
+   *   "symbol": "ETHBTC",
+   *   "price": 0.04784,
+   *   "stockExchange": "kucoin"
+   * }
+   * ```
+   *
+   * @param {string} fromTicker - The ticker symbol for the 'from' currency.
+   * @param {string} toTicker - The ticker symbol for the 'to' currency.
+   * @param {number} [limit=1] - The number of entries to retrieve. Defaults to 1.
+   * @returns {Promise<{symbol: string, price: number, stockExchange: string}>} The order book data formatted as an object.
+   */
+  async getPrice(fromTicker, toTicker) {
+    const originalShape = await super.getPrice(fromTicker, toTicker);
+    const adaptedShape = {
+      symbol: originalShape.data.symbol.split("-").join(""),
+      price: Number(originalShape.data.value),
+    };
+    return adaptedShape;
+  }
+}
+
+module.exports = Adapter;
