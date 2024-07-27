@@ -3,6 +3,7 @@
    * properly documented business-locig method description
    */
   async estimate({ inputCurrency, outputCurrency, amount }) {
+    console.log(inputCurrency, outputCurrency, amount);
     // To estimate correct priсe we have to:
     //  1. Take the most higher ask of 'inputCurrencty-outputcurrencty' from different client
     let bestAsk = { ask: Infinity, name: "" };
@@ -12,12 +13,6 @@
         outputCurrency,
         1,
       );
-
-      //   {
-      // 	lastUpdateId: 34592313711,
-      // 	bids: [ [ '3262.39000000', '5.90450000' ] ],
-      // 	asks: [ [ '3262.40000000', '28.13780000' ] ]
-      //   }
 
       // finding the smallest ask
       const [ask] = orderbook.asks[0];
