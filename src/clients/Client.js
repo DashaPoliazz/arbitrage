@@ -7,7 +7,11 @@ class Client {
   }
 
   async orderbook(fromTicker, toTicker, limit = 1) {
-    throw new Error("abstract class is unimplemnted");
+    throw new Error("abstract class is unimplemented");
+  }
+
+  async getPrice(fromTicker, toTicker) {
+    throw new Error("abstract class is unimplemented");
   }
 }
 

@@ -19,6 +19,7 @@ module.exports = {
       endpoints: {
         http: {
           depth: "https://api.binance.com/api/v3/depth",
+          price: "https://api.binance.com/api/v3/ticker/price",
         },
       },
     },
@@ -30,6 +31,7 @@ module.exports = {
       endpoints: {
         http: {
           depth: "https://api.kucoin.com/api/v1/market/orderbook/level1",
+          price: "https://api.kucoin.com/api/v1/mark-price",
         },
       },
     },

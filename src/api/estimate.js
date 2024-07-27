@@ -3,7 +3,6 @@
    * properly documented business-logic method description
    */
   async estimate({ inputCurrency, outputCurrency, amount }) {
-    console.log(inputCurrency, outputCurrency, amount);
     // To estimate correct priсe we have to
     // take the most higher ask of 'inputCurrencty-outputcurrencty'
     // from different client

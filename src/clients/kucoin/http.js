@@ -46,6 +46,32 @@ class KucoinHTTP extends Client {
     };
     return adaptedResult;
   }
+
+  /**
+   * https://www.kucoin.com/docs/rest/spot-trading/market-data/get-ticker
+   *
+   * @param {string} fromTicker
+   * @param {string} toTicker
+   * @param {number} limit
+   */
+  async getPrice(fromTicker, toTicker) {
+    const url = new URL(this.config.endpoints.http.price);
+    const symbol = fromTicker.concat("-").concat(toTicker).toUpperCase();
+    // url.searchParams.append("symbol", symbol);
+    url.pathname = `${url.pathname}/${symbol}/current`;
+    // fetching orderbook data
+    const response = await fetch(url);
+    const result = await response.json();
+    console.log("RESULT", url);
+    // TODO:
+    // [ ] Move this logic to price adapter ?
+    // [ ] Pass verification to get full-depth access to the orderbook
+    const adaptedResult = {
+      symbol: symbol.split("-").join(""),
+      price: await result.data.value.toString(),
+    };
+    return adaptedResult;
+  }
 }
 
 module.exports = KucoinHTTP;

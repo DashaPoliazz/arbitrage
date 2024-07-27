@@ -23,7 +23,22 @@ class BinanceHTTP extends Client {
     // fetching orderbook data
     const response = await fetch(url);
     const result = await response.json();
+    return result;
+  }
 
+  /**
+   * https://binance-docs.github.io/apidocs/spot/en/#trading-day-ticker
+   *
+   * @param {string} fromTicker
+   * @param {string} toTicker
+   */
+  async getPrice(fromTicker, toTicker) {
+    const url = new URL(this.config.endpoints.http.price);
+    const symbol = fromTicker.concat(toTicker).toUpperCase();
+    url.searchParams.append("symbol", symbol);
+    // fetching orderbook data
+    const response = await fetch(url);
+    const result = await response.json();
     return result;
   }
 }
