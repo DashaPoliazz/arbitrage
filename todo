@@ -1,0 +1,6 @@
+Error handling:
+[ ] wrong ticker name, or 404
+[ ] we have one ticker on one stock-exchange, but don't have it on another
+
+Architecture
+[ ] implement price adapter (move this logic from kucoin to 'adapter')

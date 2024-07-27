@@ -43,4 +43,15 @@ class BinanceHTTP extends Client {
   }
 }
 
+class Adapter extends BinanceHTTP {
+  constructor(config) {
+    super(config);
+  }
+
+  async orderbook(fromTicker, toTicker, limit = 1) {
+    const originalShape = await super.orderbook(fromTicker, toTicker, limit);
+  }
+  async getPrice(fromTicker, toTicker) {}
+}
+
 module.exports = BinanceHTTP;
