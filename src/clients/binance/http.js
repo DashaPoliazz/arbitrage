@@ -23,6 +23,7 @@ class BinanceHTTP extends Client {
     // fetching orderbook data
     const response = await fetch(url);
     const result = await response.json();
+
     return result;
   }
 }

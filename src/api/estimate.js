@@ -1,11 +1,12 @@
 ({
   /**
-   * properly documented business-locig method description
+   * properly documented business-logic method description
    */
   async estimate({ inputCurrency, outputCurrency, amount }) {
     console.log(inputCurrency, outputCurrency, amount);
-    // To estimate correct priсe we have to:
-    //  1. Take the most higher ask of 'inputCurrencty-outputcurrencty' from different client
+    // To estimate correct priсe we have to
+    // take the most higher ask of 'inputCurrencty-outputcurrencty'
+    // from different client
     let bestAsk = { ask: Infinity, name: "" };
     for (const client of clients) {
       const orderbook = await client.orderbook(
@@ -13,7 +14,6 @@
         outputCurrency,
         1,
       );
-
       // finding the smallest ask
       const [ask] = orderbook.asks[0];
       if (ask < bestAsk.ask) bestAsk = { ask, name: client.name };
