@@ -27,18 +27,22 @@
     // from different client
     let bestAsk = { ask: Infinity, name: "" };
     for (const client of clients) {
-      const orderbook = await client.orderbook(
-        inputCurrency,
-        outputCurrency,
-        1,
-      );
-      console.log(orderbook, client.name);
-      // finding the smallest ask
-      const [ask] = orderbook.asks[0];
-      if (ask < bestAsk.ask) bestAsk = { ask, name: client.name };
+      try {
+        const orderbook = await client.orderbook(
+          inputCurrency,
+          outputCurrency,
+          1,
+        );
+        console.log(orderbook, client.name);
+        // finding the smallest ask
+        const [ask] = orderbook.asks[0];
+        if (ask < bestAsk.ask) bestAsk = { ask, name: client.name };
+      } catch (error) {}
     }
     const exchangeName = bestAsk.name;
     const ouputAmount = bestAsk.ask * amount;
-    return { exchangeName, ouputAmount };
+    return exchangeName.length
+      ? { exchangeName, ouputAmount }
+      : `Cannot estimate ${inputCurrency}-${outputCurrency}`;
   },
 });

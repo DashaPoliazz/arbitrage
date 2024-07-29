@@ -89,19 +89,18 @@ class Adapter extends KucoinHTTP {
    * {
    *   "symbol": "ETHBTC",
    *   "price": 0.04784,
-   *   "stockExchange": "kucoin"
    * }
    * ```
    *
    * @param {string} fromTicker - The ticker symbol for the 'from' currency.
    * @param {string} toTicker - The ticker symbol for the 'to' currency.
    * @param {number} [limit=1] - The number of entries to retrieve. Defaults to 1.
-   * @returns {Promise<{symbol: string, price: number, stockExchange: string}>} The order book data formatted as an object.
+   * @returns {Promise<{symbol: string, price: number}>} The order book data formatted as an object.
    */
   async getPrice(fromTicker, toTicker) {
     const originalShape = await super.getPrice(fromTicker, toTicker);
     const adaptedShape = {
-      symbol: originalShape.data.symbol.split("-").join(""),
+      symbol: originalShape.data.symbol.split("-").join("").toUpperCase(),
       price: Number(originalShape.data.value),
     };
     return adaptedShape;
