@@ -33,7 +33,6 @@
           outputCurrency,
           1,
         );
-        console.log(orderbook, client.name);
         // finding the smallest ask
         const [ask] = orderbook.asks[0];
         if (ask < bestAsk.ask) bestAsk = { ask, name: client.name };

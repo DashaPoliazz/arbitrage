@@ -18,8 +18,8 @@ module.exports = (routing, port, console) => {
         connection.send('"Not found"', { binary: false });
         return;
       }
-      // checking handler
 
+      // checking handler
       const handler = entity[method];
       if (!handler) {
         connection.send('"Not found"', { binary: false });

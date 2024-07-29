@@ -20,7 +20,6 @@ class KucoinHTTP extends Client {
     const symbol = fromTicker.concat("-").concat(toTicker).toUpperCase();
     url.searchParams.append("symbol", symbol);
     // fetching orderbook data
-    console.log(url.toString());
     const response = await fetch(url);
     const result = await response.json();
     return result;
