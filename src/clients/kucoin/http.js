@@ -35,7 +35,6 @@ class KucoinHTTP extends Client {
   async getPrice(fromTicker, toTicker) {
     const url = new URL(this.config.endpoints.http.price);
     const symbol = fromTicker.concat("-").concat(toTicker).toUpperCase();
-    // url.searchParams.append("symbol", symbol);
     url.pathname = `${url.pathname}/${symbol}/current`;
     // fetching orderbook data
     const response = await fetch(url);
