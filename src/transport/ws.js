@@ -25,7 +25,8 @@ module.exports = (routing, port, console) => {
         connection.send('"Not found"', { binary: false });
         return;
       }
-      console.log(`${ip} ${name}.${method}(${args})`);
+      // for logging purposes:
+      console.system(`${ip} ${name}.${method}(${JSON.stringify(args)})`);
       // trying to calculate the result
       try {
         const result = await handler(args);

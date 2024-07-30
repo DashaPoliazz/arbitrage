@@ -44,8 +44,9 @@ class KucoinHTTP extends Client {
 }
 
 class Adapter extends KucoinHTTP {
-  constructor(config) {
+  constructor(config, logger) {
     super(config);
+    this.logger = logger;
   }
 
   /**
@@ -74,7 +75,18 @@ class Adapter extends KucoinHTTP {
    */
   async orderbook(fromTicker, toTicker, limit = 1) {
     const originalShape = await super.orderbook(fromTicker, toTicker, limit);
+    // Errors handling
+    if (originalShape.msg && originalShape.code) {
+      this.logger.log(originalShape);
+      return {
+        isError: true,
+        message: originalShape.msg,
+        code: Number(originalShape.code),
+      };
+    }
+    // Normal flow
     const adaptedShape = {
+      isError: false,
       lastUpdateId: originalShape.data.time,
       bids: [[originalShape.data.bestBid, originalShape.data.bestBidSize]],
       asks: [[originalShape.data.bestAsk, originalShape.data.bestAskSize]],
@@ -97,7 +109,18 @@ class Adapter extends KucoinHTTP {
    */
   async getPrice(fromTicker, toTicker) {
     const originalShape = await super.getPrice(fromTicker, toTicker);
+    // Error founded
+    if (originalShape.msg && originalShape.code) {
+      this.logger.log(originalShape);
+      return {
+        isError: true,
+        message: originalShape.msg,
+        code: Number(originalShape.code),
+      };
+    }
+    // Normal flow
     const adaptedShape = {
+      isError: false,
       symbol: originalShape.data.symbol.split("-").join("").toUpperCase(),
       price: Number(originalShape.data.value),
     };

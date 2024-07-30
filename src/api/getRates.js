@@ -30,10 +30,8 @@
   async getRates({ inputCurrency, outputCurrency }) {
     const prices = [];
     for (const client of clients) {
-      try {
-        const price = await client.getPrice(inputCurrency, outputCurrency);
-        prices.push({ ...price, stockExchange: client.name });
-      } catch (error) {}
+      const price = await client.getPrice(inputCurrency, outputCurrency);
+      prices.push({ ...price, stockExchange: client.name });
     }
     return prices;
   },

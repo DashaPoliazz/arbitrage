@@ -6,6 +6,7 @@ const config = require("./config.js");
 const load = require("./load.js")(config.sandbox);
 const process = require("node:process");
 const transport = require(`./transport/${config.api.transport}.js`);
+const logger = require("./logger.js");
 
 // instantiating stock exchanges clients
 const clients = [];
@@ -16,20 +17,20 @@ for (const clientName of config.activeClients) {
   // should have flag 'true' if 'config.activeClient' includes 'clientName'
   if (clientConfig.httpConnection) {
     const HTTPClient = require(`./clients/${clientName}/http.js`);
-    const client = new HTTPClient(clientConfig);
+    const client = new HTTPClient(clientConfig, logger);
     clients.push(client);
   }
   if (clientConfig.wsConnection) {
     const WSClient = require(`./clients/${clientName}/ws.js`);
-    const client = new WSClient(clientConfig);
+    const client = new WSClient(clientConfig, logger);
     clients.push(client);
   }
 }
 
 const sandbox = {
-  console,
+  console: Object.freeze(logger),
   clients,
-  common: {},
+  common: { console },
 };
 
 const apiPath = path.join(process.cwd(), "./api");
@@ -44,6 +45,5 @@ const routing = {};
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  transport(routing, config.api.port, console);
-  console.log("started");
+  transport(routing, config.api.port, logger);
 })();

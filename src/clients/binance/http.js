@@ -44,8 +44,9 @@ class BinanceHTTP extends Client {
 }
 
 class Adapter extends BinanceHTTP {
-  constructor(config) {
+  constructor(config, logger) {
     super(config);
+    this.logger = logger;
   }
 
   /**
@@ -74,6 +75,16 @@ class Adapter extends BinanceHTTP {
    */
   async orderbook(fromTicker, toTicker, limit = 1) {
     const originalShape = await super.orderbook(fromTicker, toTicker, limit);
+    // Errors handling
+    if (originalShape.msg && originalShape.code) {
+      this.logger.log(originalShape);
+      return {
+        isError: true,
+        message: originalShape.msg,
+        code: Number(originalShape.code),
+      };
+    }
+    // Normal flow
     return originalShape;
   }
 
@@ -92,6 +103,16 @@ class Adapter extends BinanceHTTP {
    */
   async getPrice(fromTicker, toTicker) {
     const originalShape = await super.getPrice(fromTicker, toTicker);
+    // Errors handling
+    if (originalShape.msg && originalShape.code) {
+      this.logger.log(originalShape);
+      return {
+        isError: true,
+        message: originalShape.msg,
+        code: Number(originalShape.code),
+      };
+    }
+    // Normal flow
     return {
       ...originalShape,
       price: Number(originalShape.price),
