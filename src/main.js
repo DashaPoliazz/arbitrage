@@ -45,4 +45,5 @@ const routing = {};
   }
 
   transport(routing, config.api.port, console);
+  console.log("started");
 })();
