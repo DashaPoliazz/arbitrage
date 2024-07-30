@@ -44,6 +44,10 @@ class KucoinHTTP extends Client {
 }
 
 class Adapter extends KucoinHTTP {
+  STATUS_CODES = {
+    SUCCESS: "2",
+  };
+
   constructor(config, logger) {
     super(config);
     this.logger = logger;
@@ -76,11 +80,18 @@ class Adapter extends KucoinHTTP {
   async orderbook(fromTicker, toTicker, limit = 1) {
     const originalShape = await super.orderbook(fromTicker, toTicker, limit);
     // Errors handling
-    if (originalShape.msg && originalShape.code) {
+    if (!originalShape.code.startsWith(this.STATUS_CODES.SUCCESS)) {
       this.logger.log(originalShape);
       return {
         isError: true,
         message: originalShape.msg,
+        code: Number(originalShape.code),
+      };
+    }
+    if (originalShape.data === null) {
+      return {
+        isError: true,
+        message: "There is no data :(",
         code: Number(originalShape.code),
       };
     }
@@ -115,6 +126,13 @@ class Adapter extends KucoinHTTP {
       return {
         isError: true,
         message: originalShape.msg,
+        code: Number(originalShape.code),
+      };
+    }
+    if (originalShape.data === null) {
+      return {
+        isError: true,
+        message: "There is no data :(",
         code: Number(originalShape.code),
       };
     }
