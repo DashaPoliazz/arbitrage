@@ -10,13 +10,15 @@
    * ```json
    * [
    *   {
-   *     "symbol": "ETHBTC",
-   *     "price": 0.04796,
+   *     "isError": false,
+   *     "symbol": "USDTBTC",
+   *     "price": 0.000015097074187022554,
    *     "stockExchange": "binance"
    *   },
    *   {
-   *     "symbol": "ETHBTC",
-   *     "price": 0.04796,
+   *     "isError": false,
+   *     "symbol": "USDTBTC",
+   *     "price": 0.0000151,
    *     "stockExchange": "kucoin"
    *   }
    * ]
@@ -27,6 +29,7 @@
    * @param {string} params.outputCurrency - The ticker symbol of the output currency.
    * @returns {Promise<Array<{symbol: string, price: number, stockExchange: string}>>} A promise that resolves to an array of objects representing the rates from different exchanges.
    */
+
   async getRates({ inputCurrency, outputCurrency }) {
     const prices = [];
     for (const client of clients) {
