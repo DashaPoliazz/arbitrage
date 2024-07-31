@@ -1,0 +1,12 @@
+2024-07-31T21:54:28	API on port 8000
+2024-07-31T21:54:28	API on port 8000
+2024-07-31T21:54:38	API on port 8000
+2024-07-31T21:54:40	::ffff:127.0.0.1 getRates.getRates({"baseCurrency":"BTC","quoteCurrency":"USDT"})
+2024-07-31T21:54:41	{ symbol: 'BTCUSDT', price: 64954.92 }
+2024-07-31T21:54:41	{ msg: 'mark price is not supported', code: '415000' }
+2024-07-31T21:54:41	{ isError: true, message: 'mark price is not supported', code: 415000 }
+2024-07-31T21:55:52	API on port 8000
+2024-07-31T21:55:53	::ffff:127.0.0.1 getRates.getRates({"baseCurrency":"BTC","quoteCurrency":"USDT"})
+2024-07-31T21:55:53	PRICE { symbol: 'BTCUSDT', price: 64952.01 }
+2024-07-31T21:55:54	{ msg: 'mark price is not supported', code: '415000' }
+2024-07-31T21:55:54	PRICE { isError: true, message: 'mark price is not supported', code: 415000 }

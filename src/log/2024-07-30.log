@@ -1,1 +1,9 @@
 2024-07-30T23:02:59	API on port 8000
+2024-07-30T23:11:23	::ffff:127.0.0.1 estimate.estimate({"inputCurrency":"USDT","outputCurrency":"ETH","amount":"10"})
+2024-07-30T23:11:23	{ code: -1121, msg: 'Invalid symbol.' }
+2024-07-30T23:11:40	::ffff:127.0.0.1 estimate.estimate({"inputCurrency":"USDT","outputCurrency":"ETH","amount":"10"})
+2024-07-30T23:11:40	{ code: -1121, msg: 'Invalid symbol.' }
+2024-07-30T23:11:46	::ffff:127.0.0.1 getRates.getRates({"inputCurrency":"USDT","outputCurrency":"BTC"})
+2024-07-30T23:11:46	{ code: -1121, msg: 'Invalid symbol.' }
+2024-07-30T23:25:09	API on port 8000
+2024-07-30T23:25:10	API on port 8000
